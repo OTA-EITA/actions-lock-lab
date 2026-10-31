@@ -1,0 +1,41 @@
+name: generate-lock
+on:
+  workflow_dispatch:
+    inputs:
+      args:
+        description: Extra arguments for gh actions-lock
+        default: ""
+permissions:
+  contents: read
+jobs:
+  lock:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install gh-actions-lock
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh extension install github/gh-actions-lock
+          gh extension list
+      - name: Run gh actions-lock
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARGS: ${{ inputs.args }}
+        run: |
+          mkdir -p out
+          cp -r .github/workflows out/before
+          set +e
+          gh actions-lock $ARGS --json > out/report.json 2> out/stderr.txt
+          echo "exit=$?" > out/exit.txt
+          set -e
+          cp -r .github/workflows out/after
+          git diff > out/workflows.diff || true
+          cat out/exit.txt out/stderr.txt
+          cat .github/workflows/actions.lock 2>/dev/null || echo "no lockfile"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: lock-output
+          path: out/

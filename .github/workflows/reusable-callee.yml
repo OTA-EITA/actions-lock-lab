@@ -1,0 +1,8 @@
+name: reusable-callee
+on: workflow_call
+permissions: {}
+jobs:
+  run:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: OTA-EITA/actions-lock-lab-action@v1

@@ -1,0 +1,6 @@
+name: reusable-caller
+on: workflow_dispatch
+permissions: {}
+jobs:
+  call:
+    uses: ./.github/workflows/reusable-callee.yml
