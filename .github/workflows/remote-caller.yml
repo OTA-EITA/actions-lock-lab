@@ -1,0 +1,6 @@
+name: remote-caller
+on: workflow_dispatch
+permissions: {}
+jobs:
+  call:
+    uses: OTA-EITA/actions-lock-lab-action/.github/workflows/remote.yml@v2
