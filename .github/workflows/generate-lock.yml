@@ -11,7 +11,7 @@ jobs:
   lock:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
       - name: Install gh-actions-lock
@@ -35,7 +35,7 @@ jobs:
           git diff > out/workflows.diff || true
           cat out/exit.txt out/stderr.txt
           cat .github/workflows/actions.lock 2>/dev/null || echo "no lockfile"
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@v7.0.2
         with:
           name: lock-output
           path: out/
